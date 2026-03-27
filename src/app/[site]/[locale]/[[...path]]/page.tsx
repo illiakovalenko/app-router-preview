@@ -12,7 +12,12 @@ import { NextIntlClientProvider } from 'next-intl';
 import { setRequestLocale } from 'next-intl/server';
 
 type PageProps = {
-  params: Promise<{ site: string; locale: string; path?: string[]; [key: string]: string | string[] | undefined }>;
+  params: Promise<{
+    site: string;
+    locale: string;
+    path?: string[];
+    [key: string]: string | string[] | undefined;
+  }>;
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 };
 
@@ -28,6 +33,8 @@ export default async function Page({ params, searchParams }: PageProps) {
   let page;
   if (draft.isEnabled) {
     const editingParams = await searchParams;
+    console.log('draft is enabled', draft.isEnabled);
+    console.log('editingParams', editingParams);
     if (isDesignLibraryPreviewData(editingParams)) {
       page = await client.getDesignLibraryData(editingParams);
     } else {
