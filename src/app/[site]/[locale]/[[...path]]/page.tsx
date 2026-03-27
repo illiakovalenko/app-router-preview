@@ -10,6 +10,7 @@ import Layout, { RouteFields } from 'src/Layout';
 import Providers from 'src/Providers';
 import { NextIntlClientProvider } from 'next-intl';
 import { setRequestLocale } from 'next-intl/server';
+import { connection } from 'next/server';
 
 type PageProps = {
   params: Promise<{
@@ -32,6 +33,7 @@ export default async function Page({ params, searchParams }: PageProps) {
   // Fetch the page data from Sitecore
   let page;
   if (draft.isEnabled) {
+    await connection();
     const editingParams = await searchParams;
     console.log('draft is enabled', draft.isEnabled);
     console.log('editingParams', editingParams);
