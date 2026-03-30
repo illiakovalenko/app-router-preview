@@ -1,0 +1,98 @@
+diff --git a/node_modules/next/dist/server/request/search-params.js b/node_modules/next/dist/server/request/search-params.js
+index 41a8c84..6273e03 100644
+--- a/node_modules/next/dist/server/request/search-params.js
++++ b/node_modules/next/dist/server/request/search-params.js
+@@ -45,6 +45,7 @@ const _utils = require("./utils");
+ const _stagedrendering = require("../app-render/staged-rendering");
+ function createSearchParamsFromClient(underlyingSearchParams) {
+     const workStore = _workasyncstorageexternal.workAsyncStorage.getStore();
++    console.log('Creating search params from client', workStore);
+     if (!workStore) {
+         throw Object.defineProperty(new _invarianterror.InvariantError('Expected workStore to be initialized'), "__NEXT_ERROR_CODE", {
+             value: "E1068",
+@@ -95,11 +96,13 @@ function createSearchParamsFromClient(underlyingSearchParams) {
+     (0, _workunitasyncstorageexternal.throwInvariantForMissingStore)();
+ }
+ function createServerSearchParamsForMetadata(underlyingSearchParams, isRuntimePrefetchable) {
++    console.log('Creating server search params for metadata', underlyingSearchParams, isRuntimePrefetchable);
+     const metadataVaryParamsAccumulator = (0, _varyparams.getMetadataVaryParamsAccumulator)();
+     return createServerSearchParamsForServerPage(underlyingSearchParams, metadataVaryParamsAccumulator, isRuntimePrefetchable);
+ }
+ function createServerSearchParamsForServerPage(underlyingSearchParams, varyParamsAccumulator, isRuntimePrefetchable) {
+     const workStore = _workasyncstorageexternal.workAsyncStorage.getStore();
++    console.log('Creating server search params for server page', workStore);
+     if (!workStore) {
+         throw Object.defineProperty(new _invarianterror.InvariantError('Expected workStore to be initialized'), "__NEXT_ERROR_CODE", {
+             value: "E1068",
+@@ -147,6 +150,7 @@ function createServerSearchParamsForServerPage(underlyingSearchParams, varyParam
+ }
+ function createPrerenderSearchParamsForClientPage() {
+     const workStore = _workasyncstorageexternal.workAsyncStorage.getStore();
++    console.log('Creating prerender search params for client page', workStore);
+     if (!workStore) {
+         throw Object.defineProperty(new _invarianterror.InvariantError('Expected workStore to be initialized'), "__NEXT_ERROR_CODE", {
+             value: "E1068",
+@@ -204,6 +208,7 @@ function createPrerenderSearchParamsForClientPage() {
+     (0, _workunitasyncstorageexternal.throwInvariantForMissingStore)();
+ }
+ function createStaticPrerenderSearchParams(workStore, prerenderStore) {
++    console.log('Creating static prerender search params', workStore, prerenderStore);
+     if (workStore.forceStatic) {
+         // When using forceStatic we override all other logic and always just return an empty
+         // dictionary object.
+@@ -227,6 +232,7 @@ function createRuntimePrerenderSearchParams(underlyingSearchParams, workUnitStor
+     const underlyingSearchParamsWithVarying = varyParamsAccumulator !== null ? (0, _varyparams.createVaryingSearchParams)(varyParamsAccumulator, underlyingSearchParams) : underlyingSearchParams;
+     const result = makeUntrackedSearchParams(underlyingSearchParamsWithVarying);
+     const { stagedRendering } = workUnitStore;
++    console.log('Creating runtime prerender search params', underlyingSearchParamsWithVarying, result, stagedRendering);
+     if (!stagedRendering) {
+         return result;
+     }
+@@ -234,6 +240,7 @@ function createRuntimePrerenderSearchParams(underlyingSearchParams, workUnitStor
+     return stagedRendering.waitForStage(stage).then(()=>result);
+ }
+ function createRenderSearchParams(underlyingSearchParams, workStore, requestStore, isRuntimePrefetchable) {
++    console.log('Creating render search params', underlyingSearchParams, workStore, requestStore, isRuntimePrefetchable);
+     if (workStore.forceStatic) {
+         // When using forceStatic we override all other logic and always just return an empty
+         // dictionary object.
+@@ -260,6 +267,7 @@ const CachedSearchParams = new WeakMap();
+ const CachedSearchParamsForUseCache = new WeakMap();
+ function makeHangingSearchParams(workStore, prerenderStore) {
+     const cachedSearchParams = CachedSearchParams.get(prerenderStore);
++    console.log('Making hanging search params', cachedSearchParams);
+     if (cachedSearchParams) {
+         return cachedSearchParams;
+     }
+@@ -365,6 +373,7 @@ function makeErroringSearchParamsForUseCache() {
+ }
+ function makeUntrackedSearchParams(underlyingSearchParams) {
+     const cachedSearchParams = CachedSearchParams.get(underlyingSearchParams);
++    console.log('Making untracked search params', cachedSearchParams);
+     if (cachedSearchParams) {
+         return cachedSearchParams;
+     }
+@@ -373,6 +382,7 @@ function makeUntrackedSearchParams(underlyingSearchParams) {
+     return promise;
+ }
+ function makeUntrackedSearchParamsWithDevWarnings(underlyingSearchParams, workStore, requestStore, isRuntimePrefetchable) {
++    console.log('Making untracked search params with dev warnings', underlyingSearchParams, workStore, requestStore, isRuntimePrefetchable);
+     if (requestStore.asyncApiPromises) {
+         // Do not cache the resulting promise. If we do, we'll only show the first "awaited at"
+         // across all segments that receive searchParams.
+@@ -388,6 +398,7 @@ function makeUntrackedSearchParamsWithDevWarnings(underlyingSearchParams, workSt
+     }
+ }
+ function makeUntrackedSearchParamsWithDevWarningsImpl(underlyingSearchParams, workStore, requestStore, isRuntimePrefetchable) {
++    console.log('Making untracked search params with dev warnings impl', underlyingSearchParams, workStore, requestStore, isRuntimePrefetchable);
+     const promiseInitialized = {
+         current: false
+     };
+@@ -517,6 +528,7 @@ function createSearchAccessError(route, expression) {
+ }
+ function createClientSearchParamsInValidation(underlyingSearchParams, workStore, workUnitStore) {
+     var _workUnitStore_validationSamples;
++    console.log('Creating client search params in validation', underlyingSearchParams, workStore, workUnitStore);
+     const { createExhaustiveSearchParamsProxy } = require('../app-render/instant-validation/instant-samples');
+     const declaredKeys = new Set(Object.keys(((_workUnitStore_validationSamples = workUnitStore.validationSamples) == null ? void 0 : _workUnitStore_validationSamples.searchParams) ?? {}));
+     underlyingSearchParams = createExhaustiveSearchParamsProxy(underlyingSearchParams, declaredKeys, workStore.route);
