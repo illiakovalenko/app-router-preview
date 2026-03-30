@@ -1,3 +1,20 @@
+diff --git a/node_modules/@sitecore-content-sdk/nextjs/dist/cjs/editing/utils.js b/node_modules/@sitecore-content-sdk/nextjs/dist/cjs/editing/utils.js
+index f33d799..1788acd 100644
+--- a/node_modules/@sitecore-content-sdk/nextjs/dist/cjs/editing/utils.js
++++ b/node_modules/@sitecore-content-sdk/nextjs/dist/cjs/editing/utils.js
+@@ -193,9 +193,12 @@ const getEditingRequestHtml = async (requestUrl, propagatedQsParams, propagatedH
+         }
+     }
+     requestUrl.searchParams.append('timestamp', Date.now().toString());
++    propagatedHeaders['Cache-Control'] = 'no-store';
++    console.log('Propagated headers cjs:', propagatedHeaders);
+     const pageRes = await dataFetcher
+         .get(requestUrl.toString(), {
+         credentials: 'include',
++        cache: 'no-store',
+         headers: propagatedHeaders,
+     })
+         .catch((err) => {
 diff --git a/node_modules/@sitecore-content-sdk/nextjs/dist/cjs/route-handler/editing-render-route-handler.js b/node_modules/@sitecore-content-sdk/nextjs/dist/cjs/route-handler/editing-render-route-handler.js
 index be84005..95e1c23 100644
 --- a/node_modules/@sitecore-content-sdk/nextjs/dist/cjs/route-handler/editing-render-route-handler.js
@@ -10,6 +27,23 @@ index be84005..95e1c23 100644
          // Restrict the page to be rendered only within the allowed origins
          responseHeaders['Content-Security-Policy'] = (0, utils_2.getCSPHeader)();
          const cookieStore = await getNextCookies();
+diff --git a/node_modules/@sitecore-content-sdk/nextjs/dist/esm/editing/utils.js b/node_modules/@sitecore-content-sdk/nextjs/dist/esm/editing/utils.js
+index 7facfd8..2d40f75 100644
+--- a/node_modules/@sitecore-content-sdk/nextjs/dist/esm/editing/utils.js
++++ b/node_modules/@sitecore-content-sdk/nextjs/dist/esm/editing/utils.js
+@@ -182,9 +182,12 @@ export const getEditingRequestHtml = async (requestUrl, propagatedQsParams, prop
+         }
+     }
+     requestUrl.searchParams.append('timestamp', Date.now().toString());
++    propagatedHeaders['Cache-Control'] = 'no-store';
++    console.log('Propagated headers esm:', propagatedHeaders);
+     const pageRes = await dataFetcher
+         .get(requestUrl.toString(), {
+         credentials: 'include',
++        cache: 'no-store',
+         headers: propagatedHeaders,
+     })
+         .catch((err) => {
 diff --git a/node_modules/@sitecore-content-sdk/nextjs/dist/esm/route-handler/editing-render-route-handler.js b/node_modules/@sitecore-content-sdk/nextjs/dist/esm/route-handler/editing-render-route-handler.js
 index 2a7a653..18bc752 100644
 --- a/node_modules/@sitecore-content-sdk/nextjs/dist/esm/route-handler/editing-render-route-handler.js
