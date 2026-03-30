@@ -1,24 +1,24 @@
-diff --git a/node_modules/@sitecore-content-sdk/nextjs/dist/cjs/editing/utils.js b/node_modules/@sitecore-content-sdk/nextjs/dist/cjs/editing/utils.js
-index f33d799..9700ce5 100644
---- a/node_modules/@sitecore-content-sdk/nextjs/dist/cjs/editing/utils.js
-+++ b/node_modules/@sitecore-content-sdk/nextjs/dist/cjs/editing/utils.js
-@@ -196,6 +196,7 @@ const getEditingRequestHtml = async (requestUrl, propagatedQsParams, propagatedH
-     const pageRes = await dataFetcher
-         .get(requestUrl.toString(), {
-         credentials: 'include',
-+        cache: 'no-store',
-         headers: propagatedHeaders,
-     })
-         .catch((err) => {
-diff --git a/node_modules/@sitecore-content-sdk/nextjs/dist/esm/editing/utils.js b/node_modules/@sitecore-content-sdk/nextjs/dist/esm/editing/utils.js
-index 7facfd8..266d5a2 100644
---- a/node_modules/@sitecore-content-sdk/nextjs/dist/esm/editing/utils.js
-+++ b/node_modules/@sitecore-content-sdk/nextjs/dist/esm/editing/utils.js
-@@ -185,6 +185,7 @@ export const getEditingRequestHtml = async (requestUrl, propagatedQsParams, prop
-     const pageRes = await dataFetcher
-         .get(requestUrl.toString(), {
-         credentials: 'include',
-+        cache: 'no-store',
-         headers: propagatedHeaders,
-     })
-         .catch((err) => {
+diff --git a/node_modules/@sitecore-content-sdk/nextjs/dist/cjs/route-handler/editing-render-route-handler.js b/node_modules/@sitecore-content-sdk/nextjs/dist/cjs/route-handler/editing-render-route-handler.js
+index be84005..95e1c23 100644
+--- a/node_modules/@sitecore-content-sdk/nextjs/dist/cjs/route-handler/editing-render-route-handler.js
++++ b/node_modules/@sitecore-content-sdk/nextjs/dist/cjs/route-handler/editing-render-route-handler.js
+@@ -123,6 +123,7 @@ const createEditingRenderRouteHandlers = (options) => {
+         const route = ((_a = options === null || options === void 0 ? void 0 : options.resolvePageUrl) === null || _a === void 0 ? void 0 : _a.call(options, encodedRoute)) || encodedRoute;
+         const base = (0, utils_2.resolveServerUrl)(req);
+         const requestUrl = new URL(route, base);
++        requestUrl.searchParams.append('timestamp', Date.now().toString());
+         // Restrict the page to be rendered only within the allowed origins
+         responseHeaders['Content-Security-Policy'] = (0, utils_2.getCSPHeader)();
+         const cookieStore = await getNextCookies();
+diff --git a/node_modules/@sitecore-content-sdk/nextjs/dist/esm/route-handler/editing-render-route-handler.js b/node_modules/@sitecore-content-sdk/nextjs/dist/esm/route-handler/editing-render-route-handler.js
+index 2a7a653..18bc752 100644
+--- a/node_modules/@sitecore-content-sdk/nextjs/dist/esm/route-handler/editing-render-route-handler.js
++++ b/node_modules/@sitecore-content-sdk/nextjs/dist/esm/route-handler/editing-render-route-handler.js
+@@ -116,6 +116,7 @@ export const createEditingRenderRouteHandlers = (options) => {
+         const route = ((_a = options === null || options === void 0 ? void 0 : options.resolvePageUrl) === null || _a === void 0 ? void 0 : _a.call(options, encodedRoute)) || encodedRoute;
+         const base = resolveServerUrl(req);
+         const requestUrl = new URL(route, base);
++        requestUrl.searchParams.append('timestamp', Date.now().toString());
+         // Restrict the page to be rendered only within the allowed origins
+         responseHeaders['Content-Security-Policy'] = getCSPHeader();
+         const cookieStore = await getNextCookies();
